@@ -8,7 +8,7 @@
 <meta name="description" content="PTI Sangrar official platform — news, activities, membership and volunteer registration for District Sangrar.">
 <meta property="og:title" content="PTI Sangrar — Official Digital Platform">
 <meta property="og:type" content="website">
-<meta property="og:description" content="News, activities, membership and volunteer registration for District Sangrar.">
+<meta property="og:description" content="News, activities, and ways to get involved — all in one place.">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
@@ -63,7 +63,13 @@
         </div>
       </div>
       <div class="hero-visual" aria-hidden="true">
-        <span class="brand-mark" style="width:96px;height:96px;border-radius:24px;"></span>
+        <!-- Responsive hero image (place actual image files in assets/images/) -->
+        <picture>
+          <!-- WebP sources for supported browsers (pre-generated if possible) -->
+          <source type="image/webp" srcset="./assets/images/hero-ptisangrar-1920.webp 1920w, ./assets/images/hero-ptisangrar-1280.webp 1280w, ./assets/images/hero-ptisangrar-800.webp 800w" sizes="(min-width:900px) 45vw, 100vw">
+          <!-- Fallback JPG/PNG sources -->
+          <img src="./assets/images/hero-ptisangrar-1920.jpg" srcset="./assets/images/hero-ptisangrar-1920.jpg 1920w, ./assets/images/hero-ptisangrar-1280.jpg 1280w, ./assets/images/hero-ptisangrar-800.jpg 800w" sizes="(min-width:900px) 45vw, 100vw" alt="PTI Sangrar collage hero" loading="lazy" decoding="async" width="1920" height="1080">
+        </picture>
       </div>
     </div>
   </section>
