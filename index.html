@@ -2,17 +2,17 @@
 <html lang="ur" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<script src="/js/error-guard.js"></script>
+<script src="./error-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PTI Sangrar — Official Digital Platform</title>
 <meta name="description" content="PTI Sangrar official platform — news, activities, membership and volunteer registration for District Sangrar.">
 <meta property="og:title" content="PTI Sangrar — Official Digital Platform">
 <meta property="og:type" content="website">
 <meta property="og:description" content="News, activities, membership and volunteer registration for District Sangrar.">
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" href="/images/icon-192.png">
-<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
-<link rel="stylesheet" href="/css/style.css">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="stylesheet" href="./style.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -175,11 +175,11 @@
 </footer>
 
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-<script src="/js/main.js"></script>
-<script type="module" src="/js/stats.js"></script>
-<script type="module" src="/js/content.js"></script>
+<script src="./main.js"></script>
+<script type="module" src="./stats.js"></script>
+<script type="module" src="./content.js"></script>
 <script type="module">
-  import { renderNewsList } from "/js/news.js";
+  import { renderNewsList } from "./news.js";
   renderNewsList(document.getElementById("newsGrid"), { limit: 6 });
 </script>
 </body>
