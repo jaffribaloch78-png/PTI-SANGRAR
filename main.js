@@ -11,21 +11,36 @@ function getSavedLang() {
 }
 
 async function loadLang(code) {
-  const res = await fetch(`/lang/${code}.json`);
-  return res.json();
+  // Load language file relative to the current page (./en.json, ./ur.json, ./sd.json).
+  // This matches the repository layout where en.json / ur.json / sd.json live at the repo root.
+  try {
+    const res = await fetch(`./${code}.json`);
+    if (!res.ok) throw new Error(`Language file not found: ${code} (status ${res.status})`);
+    return await res.json();
+  } catch (err) {
+    console.warn("Failed to load language", code, err);
+    // Fallback: if requested language failed, try default language file.
+    if (code !== DEFAULT_LANG) {
+      try {
+        const res2 = await fetch(`./${DEFAULT_LANG}.json`);
+        if (res2.ok) return await res2.json();
+      } catch (e) { /* swallow */ }
+    }
+    return {};
+  }
 }
 
 function applyTranslations(dict) {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict[key]) el.textContent = dict[key];
+    if (dict && dict[key]) el.textContent = dict[key];
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
-    if (dict[key]) el.setAttribute("placeholder", dict[key]);
+    if (dict && dict[key]) el.setAttribute("placeholder", dict[key]);
   });
-  document.body.setAttribute("dir", dict.dir || "ltr");
-  document.documentElement.setAttribute("lang", window.__currentLang || "ur");
+  document.body.setAttribute("dir", (dict && dict.dir) || "ltr");
+  document.documentElement.setAttribute("lang", window.__currentLang || DEFAULT_LANG);
   document.body.classList.toggle("lang-sd", window.__currentLang === "sd");
 }
 
