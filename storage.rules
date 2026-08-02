@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// ============================================================
+// FIREBASE STORAGE SECURITY RULES — PTI Sangrar
+//
+// Public read for published media (news images, gallery photos).
+// Only an admin (checked against the SAME /admins/{uid} Firestore
+// collection used by firestore.rules) can upload or delete.
+// Requires no Cloud Functions — Storage rules can read Firestore
+// directly via firestore.get()/firestore.exists().
+//
+// Deploy with: firebase deploy --only storage
+// ============================================================
+
+function isAdmin() {
+  return request.auth != null &&
+         firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid)) &&
+         firestore.get(/databases/(default)/documents/admins/$(request.auth.uid)).data.role == "admin";
+}
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /news/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() &&
+                      request.resource.size < 5 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*');
+    }
+
+    match /gallery/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() &&
+                      request.resource.size < 8 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*');
+    }
+
+    match /videos/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() &&
+                      request.resource.size < 200 * 1024 * 1024 &&
+                      request.resource.contentType.matches('video/.*');
+    }
+
+    match /documents/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() &&
+                      request.resource.size < 15 * 1024 * 1024 &&
+                      request.resource.contentType == 'application/pdf';
+    }
+
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

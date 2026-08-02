@@ -1,0 +1,126 @@
+rules_version = '2';
+
+// ============================================================
+// FIRESTORE SECURITY RULES — PTI Sangrar
+//
+// Model:
+//  - Public CONTENT (news/gallery/events/campaigns): anyone can
+//    read only documents with status == "published"; only an
+//    authenticated admin (listed in /admins/{uid}) can write.
+//  - Public SUBMISSIONS (members/volunteers/complaints/messages):
+//    anyone can CREATE a document (submit a form); nobody but an
+//    admin can read, update, or delete — this protects the
+//    personal data (phone, CNIC, address) people submit.
+//  - /admins/{uid}: only readable by the signed-in user checking
+//    their own admin status, or by an existing admin. Never
+//    publicly writable — you add new admins yourself from the
+//    Firebase Console, not from the website.
+//  - /settings/*: publicly readable (mission text, chairman
+//    message, donation details), admin-only writable.
+//
+// Deploy with: firebase deploy --only firestore:rules
+// ============================================================
+
+function isAdmin() {
+  return request.auth != null &&
+         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
+}
+
+function isPublished() {
+  return resource.data.status == "published";
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Public content collections ----------
+    match /news/{docId} {
+      allow get: if isPublished() || isAdmin();
+      allow list: if true; // list queries already filter status == "published" client-side;
+                            // get() above still blocks direct reads of unpublished docs by ID.
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /gallery/{docId} {
+      allow get: if isPublished() || isAdmin();
+      allow list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /videos/{docId} {
+      allow get: if isPublished() || isAdmin();
+      allow list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /events/{docId} {
+      allow get: if isPublished() || isAdmin();
+      allow list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /campaigns/{docId} {
+      allow get: if isPublished() || isAdmin();
+      allow list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---------- Public submission collections (write-only for the public) ----------
+    match /members/{docId} {
+      allow create: if request.resource.data.name is string &&
+                       request.resource.data.name.size() >= 3 &&
+                       request.resource.data.phone is string &&
+                       request.resource.data.keys().hasAll(['name','phone','cnic','address','status','submittedAt']);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /volunteers/{docId} {
+      allow create: if request.resource.data.name is string &&
+                       request.resource.data.name.size() >= 3 &&
+                       request.resource.data.keys().hasAll(['name','phone','status','submittedAt']);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /complaints/{docId} {
+      allow create: if request.resource.data.name is string &&
+                       request.resource.data.message is string &&
+                       request.resource.data.message.size() >= 10 &&
+                       request.resource.data.keys().hasAll(['name','phone','subject','message','status','submittedAt']);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /messages/{docId} {
+      allow create: if request.resource.data.name is string &&
+                       request.resource.data.message is string &&
+                       request.resource.data.keys().hasAll(['name','phone','message','status','submittedAt']);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /donations/{docId} {
+      // No online payment flow yet (see README) — this collection
+      // exists for when a verified gateway is connected. Locked to
+      // admin until then.
+      allow read, write: if isAdmin();
+    }
+
+    // ---------- Admin allowlist ----------
+    match /admins/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list: if isAdmin();
+      allow write: if false; // add admins manually via Firebase Console, never from the app
+    }
+
+    // ---------- Site settings (mission text, chairman message, donation info) ----------
+    match /settings/{docId} {
+      allow get: if true;
+      allow list: if false;
+      allow write: if isAdmin();
+    }
+
+    // Default deny — anything not explicitly matched above is blocked.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

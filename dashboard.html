@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script src="/js/error-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Dashboard — Admin</title>
+<link rel="icon" href="/images/icon-192.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><span class="brand-mark"></span> PTI Sangrar</div>
+    <nav class="admin-nav">
+      <a href="/admin/dashboard.html" class="active">Dashboard</a>
+      <a href="/admin/news-manage.html">News</a>
+      <a href="/admin/gallery-manage.html">Gallery</a>
+      <a href="/admin/submissions.html">Submissions</a>
+      <a href="/index.html" target="_blank">View Site ↗</a>
+    </nav>
+    <button class="btn btn-outline btn-block logout" style="border-color:rgba(255,255,255,.25);color:#fff;" data-logout>Sign Out</button>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1>Dashboard</h1>
+      <span class="admin-user" data-admin-email></span>
+    </div>
+
+    <div class="admin-cards">
+      <div class="admin-card"><b data-count="news">–</b><span>Published News</span></div>
+      <div class="admin-card"><b data-count="volunteers">–</b><span>Volunteers</span></div>
+      <div class="admin-card"><b data-count="members">–</b><span>Members</span></div>
+      <div class="admin-card"><b data-count="complaints_new">–</b><span>New Complaints</span></div>
+    </div>
+
+    <div class="admin-table-wrap" style="padding:24px;">
+      <h3>Quick Actions</h3>
+      <div class="grid grid-3 mt-16">
+        <a href="/admin/news-manage.html" class="card-plain">+ Publish a news item</a>
+        <a href="/admin/gallery-manage.html" class="card-plain">+ Upload photos</a>
+        <a href="/admin/submissions.html" class="card-plain">Review submissions</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module">
+  import { guardAdminPage, initLogoutButtons } from "./js/admin-auth.js";
+  import { db } from "../js/firebase-config.js";
+  import { collection, query, where, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  await guardAdminPage();
+  initLogoutButtons();
+
+  async function count(col, field, val) {
+    try {
+      const q = field ? query(collection(db, col), where(field, "==", val)) : collection(db, col);
+      const snap = await getCountFromServer(q);
+      return snap.data().count;
+    } catch (e) { console.error(e); return "–"; }
+  }
+
+  document.querySelector('[data-count="news"]').textContent = await count("news", "status", "published");
+  document.querySelector('[data-count="volunteers"]').textContent = await count("volunteers");
+  document.querySelector('[data-count="members"]').textContent = await count("members");
+  document.querySelector('[data-count="complaints_new"]').textContent = await count("complaints", "status", "new");
+</script>
+</body>
+</html>

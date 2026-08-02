@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script src="/js/error-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — PTI Sangrar</title>
+<link rel="icon" href="/images/icon-192.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a href="/index.html" class="brand"><span class="brand-mark"></span> PTI Sangrar</a>
+    <nav class="nav-links">
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+      <a href="/news.html" data-i18n="nav_news">News</a>
+      <a href="/gallery.html" data-i18n="nav_gallery">Gallery</a>
+      <a href="/events.html" data-i18n="nav_events">Events</a>
+      <a href="/contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switch">
+        <button data-lang="ur">اردو</button>
+        <button data-lang="sd">سنڌي</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section" style="padding-top:56px;">
+    <div class="container" style="max-width:820px;">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="nav_events">Events</span>
+        <h1 data-i18n="section_events">Upcoming Events</h1>
+      </div>
+      <div id="eventsList"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> PTI Sangrar — <span data-i18n="footer_rights">All rights reserved.</span></span>
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="/js/main.js"></script>
+<script type="module">
+  import { renderEvents } from "/js/events.js";
+  renderEvents(document.getElementById("eventsList"));
+</script>
+</body>
+</html>

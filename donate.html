@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script src="/js/error-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate — PTI Sangrar</title>
+<link rel="icon" href="/images/icon-192.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a href="/index.html" class="brand"><span class="brand-mark"></span> PTI Sangrar</a>
+    <nav class="nav-links">
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+      <a href="/news.html" data-i18n="nav_news">News</a>
+      <a href="/contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switch">
+        <button data-lang="ur">اردو</button>
+        <button data-lang="sd">سنڌي</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section" style="padding-top:56px;">
+    <div class="container" style="max-width:640px;">
+      <span class="eyebrow" data-i18n="nav_donate">Donate</span>
+      <h1 class="mt-16" data-i18n="donate_title">Support the Work</h1>
+      <div class="card-plain mt-24">
+        <p data-i18n="donate_note">Online payment collection is being finalized to meet Election Commission requirements for political contributions. For now, please use the details below or contact us directly.</p>
+        <div class="mt-24" data-content="donate-details">
+          <p class="muted">Bank / mobile account details — add these from Admin → Settings.</p>
+        </div>
+        <a href="/contact.html" class="btn btn-primary mt-24" data-i18n="nav_contact">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> PTI Sangrar — <span data-i18n="footer_rights">All rights reserved.</span></span>
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script src="/js/error-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — PTI Sangrar</title>
+<link rel="icon" href="/images/icon-192.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="/index.html" class="brand"><span class="brand-mark"></span> PTI Sangrar</a>
+    <nav class="nav-links"><a href="/index.html">Home</a></nav>
+  </div>
+</header>
+<main>
+  <section class="section" style="padding-top:56px;">
+    <div class="container" style="max-width:720px;">
+      <h1>Privacy Policy</h1>
+      <p class="muted mt-16">Last updated: <span id="d"></span></p>
+
+      <p class="mt-24">This site collects information that visitors choose to submit through the
+      Membership, Volunteer, and Complaint forms — including name, phone number, CNIC number,
+      and address. This information is stored securely and is only accessible to authorized
+      district administrators. It is used solely to process membership, volunteer coordination,
+      and to follow up on reported issues.</p>
+
+      <p class="mt-16">We do not sell or share submitted information with third parties. Data is
+      stored using Firebase (Google Cloud) infrastructure with access-controlled security rules.</p>
+
+      <p class="mt-16">To request that your information be corrected or removed, use the Contact
+      page. </p>
+
+      <p class="mt-24 muted" style="font-size:13px;">
+        This is a starting template. Have it reviewed against applicable data-protection
+        practice before publishing, and update it to reflect your organization's actual
+        data handling once online payments or additional services are added.
+      </p>
+    </div>
+  </section>
+</main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><span>© <span id="year"></span> PTI Sangrar</span><a href="/index.html">Home</a></div></div></footer>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("d").textContent = new Date().toLocaleDateString();
+</script>
+</body>
+</html>

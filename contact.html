@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script src="/js/error-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — PTI Sangrar</title>
+<link rel="icon" href="/images/icon-192.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a href="/index.html" class="brand"><span class="brand-mark"></span> PTI Sangrar</a>
+    <nav class="nav-links">
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+      <a href="/news.html" data-i18n="nav_news">News</a>
+      <a href="/about.html" data-i18n="nav_about">About</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switch">
+        <button data-lang="ur">اردو</button>
+        <button data-lang="sd">سنڌي</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section" style="padding-top:56px;">
+    <div class="container" style="max-width:640px;">
+      <span class="eyebrow" data-i18n="nav_contact">Contact</span>
+      <h1 class="mt-16" data-i18n="nav_contact">Contact Us</h1>
+
+      <form class="form-card mt-24" data-collection="messages">
+        <div class="field">
+          <label data-i18n="form_name">Full Name</label>
+          <input type="text" name="name" required minlength="3">
+        </div>
+        <div class="field">
+          <label data-i18n="form_phone">Phone Number</label>
+          <input type="tel" name="phone" required>
+        </div>
+        <div class="field">
+          <label data-i18n="form_message">Message</label>
+          <textarea name="message" required minlength="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="form_submit">Submit</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> PTI Sangrar — <span data-i18n="footer_rights">All rights reserved.</span></span>
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="/js/main.js"></script>
+<script type="module" src="/js/forms.js"></script>
+</body>
+</html>

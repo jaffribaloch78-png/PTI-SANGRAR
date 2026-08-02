@@ -1,0 +1,14 @@
+{
+  "name": "PTI Sangrar — Official Digital Platform",
+  "short_name": "PTI Sangrar",
+  "description": "News, activities, membership and volunteer registration for District Sangrar.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F6F3EC",
+  "theme_color": "#124C6B",
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
