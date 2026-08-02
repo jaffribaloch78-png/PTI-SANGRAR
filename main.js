@@ -1,6 +1,8 @@
 // ============================================================
 // main.js — mobile nav toggle + language switching (EN / UR / SD)
 // Translations are applied to any element with [data-i18n="key"].
+// This loader is robust: it tries multiple paths so hosting under
+// a subpath or root both work (./lang/, ./, and /).
 // ============================================================
 
 const SUPPORTED_LANGS = ["en", "ur", "sd"];
@@ -10,36 +12,60 @@ function getSavedLang() {
   return localStorage.getItem("pti_lang") || DEFAULT_LANG;
 }
 
-async function loadLang(code) {
-  // Load language file relative to the current page (./en.json, ./ur.json, ./sd.json).
-  // This matches the repository layout where en.json / ur.json / sd.json live at the repo root.
-  try {
-    const res = await fetch(`./${code}.json`);
-    if (!res.ok) throw new Error(`Language file not found: ${code} (status ${res.status})`);
-    return await res.json();
-  } catch (err) {
-    console.warn("Failed to load language", code, err);
-    // Fallback: if requested language failed, try default language file.
-    if (code !== DEFAULT_LANG) {
-      try {
-        const res2 = await fetch(`./${DEFAULT_LANG}.json`);
-        if (res2.ok) return await res2.json();
-      } catch (e) { /* swallow */ }
+async function tryFetchPaths(paths) {
+  for (const p of paths) {
+    try {
+      const res = await fetch(p);
+      if (res.ok) {
+        console.debug("Loaded language file:", p);
+        return res.json();
+      }
+    } catch (e) {
+      // continue to next
     }
-    return {};
+  }
+  throw new Error("All language fetch attempts failed: " + paths.join(", "));
+}
+
+async function loadLang(code) {
+  // Candidate locations (try in order):
+  // 1) ./lang/{code}.json (if you later move files into /lang/)
+  // 2) ./{code}.json (current repo root)
+  // 3) /{code}.json (absolute root)
+  // 4) fallback to en.json if requested file missing
+  const paths = [
+    `./lang/${code}.json`,
+    `./${code}.json`,
+    `/${code}.json`,
+  ];
+  try {
+    return await tryFetchPaths(paths);
+  } catch (e) {
+    console.warn("Failed to load language", code, "; falling back to English.");
+    // final fallback: explicit English paths
+    const fallback = [`./en.json`, `./lang/en.json`, `/en.json`];
+    try {
+      return await tryFetchPaths(fallback);
+    } catch (err) {
+      console.error("Failed to load fallback language files.", err);
+      return {};
+    }
   }
 }
 
 function applyTranslations(dict) {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict && dict[key]) el.textContent = dict[key];
+    if (dict && typeof dict[key] !== 'undefined') el.textContent = dict[key];
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
-    if (dict && dict[key]) el.setAttribute("placeholder", dict[key]);
+    if (dict && typeof dict[key] !== 'undefined') el.setAttribute("placeholder", dict[key]);
   });
-  document.body.setAttribute("dir", (dict && dict.dir) || "ltr");
+  // apply direction; if not present, don't override existing dir to avoid flash
+  if (dict && dict.dir) {
+    document.body.setAttribute("dir", dict.dir);
+  }
   document.documentElement.setAttribute("lang", window.__currentLang || DEFAULT_LANG);
   document.body.classList.toggle("lang-sd", window.__currentLang === "sd");
 }
@@ -60,6 +86,7 @@ function initLangSwitch() {
   document.querySelectorAll(".lang-switch button").forEach((btn) => {
     btn.addEventListener("click", () => setLang(btn.dataset.lang));
   });
+  // ensure we set current lang after wiring buttons
   setLang(getSavedLang());
 }
 
