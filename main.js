@@ -1,6 +1,8 @@
 // ============================================================
 // main.js — mobile nav toggle + language switching (EN / UR / SD)
 // Translations are applied to any element with [data-i18n="key"].
+// This loader is robust: it tries multiple paths so hosting under
+// a subpath or root both work (./lang/, ./, and /).
 // ============================================================
 
 const SUPPORTED_LANGS = ["en", "ur", "sd"];
@@ -10,22 +12,75 @@ function getSavedLang() {
   return localStorage.getItem("pti_lang") || DEFAULT_LANG;
 }
 
+async function tryFetchPaths(paths) {
+  for (const p of paths) {
+    try {
+      const res = await fetch(p);
+      if (res.ok) {
+        console.debug("Loaded language file:", p);
+        return res.json();
+      }
+    } catch (e) {
+      // continue to next
+    }
+  }
+  throw new Error("All language fetch attempts failed: " + paths.join(", "));
+}
+
 async function loadLang(code) {
-  const res = await fetch(`/lang/${code}.json`);
-  return res.json();
+  // Candidate locations (try in order):
+  // 1) ./lang/{code}.json (if you later move files into /lang/)
+  // 2) ./{code}.json (current repo root)
+  // 3) /{code}.json (absolute root)
+  // 4) fallback to en.json if requested file missing
+  const paths = [
+    `./lang/${code}.json`,
+    `./${code}.json`,
+    `/${code}.json`,
+  ];
+  try {
+    return await tryFetchPaths(paths);
+  } catch (e) {
+    console.warn("Failed to load language", code, "; falling back to English.");
+    // final fallback: explicit English paths
+    const fallback = [`./en.json`, `./lang/en.json`, `/en.json`];
+    try {
+      return await tryFetchPaths(fallback);
+    } catch (err) {
+      console.error("Failed to load fallback language files.", err);
+      return {};
+    }
+  }
+}
+
+function setElementTextPreserveChildren(el, text) {
+  // Replace only the first direct TEXT_NODE child, preserve other child elements (icons, spans).
+  for (const node of Array.from(el.childNodes)) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      node.nodeValue = text;
+      return;
+    }
+  }
+  // No direct text node found — prepend the text node so icons remain visually after text.
+  el.insertBefore(document.createTextNode(text), el.firstChild);
 }
 
 function applyTranslations(dict) {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict[key]) el.textContent = dict[key];
+    if (dict && typeof dict[key] !== 'undefined') {
+      setElementTextPreserveChildren(el, dict[key]);
+    }
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
-    if (dict[key]) el.setAttribute("placeholder", dict[key]);
+    if (dict && typeof dict[key] !== 'undefined') el.setAttribute("placeholder", dict[key]);
   });
-  document.body.setAttribute("dir", dict.dir || "ltr");
-  document.documentElement.setAttribute("lang", window.__currentLang || "ur");
+  // apply direction; if not present, don't override existing dir to avoid flash
+  if (dict && dict.dir) {
+    document.body.setAttribute("dir", dict.dir);
+  }
+  document.documentElement.setAttribute("lang", window.__currentLang || DEFAULT_LANG);
   document.body.classList.toggle("lang-sd", window.__currentLang === "sd");
 }
 
@@ -45,6 +100,7 @@ function initLangSwitch() {
   document.querySelectorAll(".lang-switch button").forEach((btn) => {
     btn.addEventListener("click", () => setLang(btn.dataset.lang));
   });
+  // ensure we set current lang after wiring buttons
   setLang(getSavedLang());
 }
 
