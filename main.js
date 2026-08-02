@@ -53,10 +53,24 @@ async function loadLang(code) {
   }
 }
 
+function setElementTextPreserveChildren(el, text) {
+  // Replace only the first direct TEXT_NODE child, preserve other child elements (icons, spans).
+  for (const node of Array.from(el.childNodes)) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      node.nodeValue = text;
+      return;
+    }
+  }
+  // No direct text node found — prepend the text node so icons remain visually after text.
+  el.insertBefore(document.createTextNode(text), el.firstChild);
+}
+
 function applyTranslations(dict) {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict && typeof dict[key] !== 'undefined') el.textContent = dict[key];
+    if (dict && typeof dict[key] !== 'undefined') {
+      setElementTextPreserveChildren(el, dict[key]);
+    }
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
