@@ -4,7 +4,7 @@
    a thin amber horizon line marks every section break (sunrise / new day).
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Sa[...]');
 
 :root{
   /* Color: named tokens grounded in Sangrar's dusk-over-fields */
@@ -96,7 +96,7 @@ body.lang-sd[dir="rtl"] h1, body.lang-sd[dir="rtl"] h2, body.lang-sd[dir="rtl"] 
 .lang-switch button{ border:0; background:transparent; padding:6px 12px; border-radius:999px; font-size:13px; font-weight:600; color:var(--ink); opacity:.55; }
 .lang-switch button.active{ background:var(--white); opacity:1; box-shadow:0 2px 6px rgba(11,31,46,0.12); }
 
-.btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:600; font-size:14.5px; border:1px solid transparent; transition:transform .15s, box-shadow .15s; }
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:600; font-size:14.5px; border:1px solid transparent; transition:[...] }
 .btn:active{ transform:translateY(1px); }
 .btn-primary{ background:var(--sky); color:var(--white); box-shadow:0 8px 20px rgba(18,76,107,0.28); }
 .btn-primary:hover{ box-shadow:0 10px 26px rgba(18,76,107,0.36); }
@@ -126,7 +126,7 @@ body.lang-sd[dir="rtl"] h1, body.lang-sd[dir="rtl"] h2, body.lang-sd[dir="rtl"] 
 .hero h1{ font-size:clamp(34px,5vw,58px); color:var(--white); }
 .hero p.lead{ font-size:18px; opacity:.92; margin-top:18px; max-width:46ch; }
 .hero-actions{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
-.hero-visual{ aspect-ratio:1/1; border-radius:24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; }
+.hero-visual{ aspect-ratio:1/1; border-radius:24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; overflow:hidden; }
 
 /* ---------- Stats strip ---------- */
 .stats-strip{ background:var(--ink); color:var(--white); }
@@ -182,7 +182,7 @@ body.lang-sd[dir="rtl"] h1, body.lang-sd[dir="rtl"] h2, body.lang-sd[dir="rtl"] 
 .footer-grid h4{ color:var(--white); font-size:15px; margin-bottom:14px; }
 .footer-grid a{ display:block; padding:5px 0; font-size:14px; opacity:.75; }
 .footer-grid a:hover{ opacity:1; }
-.footer-bottom{ border-top:1px solid rgba(255,255,255,0.12); margin-top:44px; padding-top:22px; font-size:13px; opacity:.6; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.footer-bottom{ border-top:1px solid rgba(255,255,255,0.12); margin-top:44px; padding-top:22px; font-size:13px; opacity:.6; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; [...] }
 
 /* ---------- Utility ---------- */
 .mt-8{ margin-top:8px;} .mt-16{ margin-top:16px;} .mt-24{ margin-top:24px;} .mt-40{ margin-top:40px;}
