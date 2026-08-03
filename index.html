@@ -1,17 +1,123 @@
-@@
--       <div class="hero-visual" aria-hidden="true">
-+       <div class="hero-visual">
--        <img src="./assets/images/hero.jpg"
--             alt="PTI Sangrar Hero Banner"
--             loading="lazy"
--             decoding="async"
--             width="1920"
--             height="1080">
-+        <img src="./assets/images/hero.jpg"
-+             alt="PTI Sangrar Hero Banner"
-+             loading="lazy"
-+             decoding="async"
-+             width="1920"
-+             height="1080">
-       </div>
-@@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script src="/js/error-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PTI Sangrar</title>
+<link rel="icon" href="/images/icon-192.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <a href="/index.html" class="brand"><span class="brand-mark"></span> PTI Sangrar</a>
+    <nav class="nav-links">
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+      <a href="/about.html" data-i18n="nav_about">About</a>
+      <a href="/news.html" data-i18n="nav_news">News</a>
+      <a href="/gallery.html" data-i18n="nav_gallery">Gallery</a>
+      <a href="/events.html" data-i18n="nav_events">Events</a>
+      <a href="/contact.html" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switch">
+        <button data-lang="ur">اردو</button>
+        <button data-lang="sd">سنڌي</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <span class="hero-eyebrow" data-i18n="hero_eyebrow">Official Digital Platform — Sangrar</span>
+      <h1 data-i18n="hero_title">One district, working together for real change.</h1>
+      <p class="lead" data-i18n="hero_lead">News, activities, and ways to get involved — all in one place, updated directly by our team.</p>
+      <div class="hero-actions">
+        <a href="/membership.html" class="btn btn-outline" data-i18n="cta_member">Become a Member</a>
+        <a href="/volunteer.html" class="btn btn-amber" data-i18n="cta_volunteer">Join as a Volunteer</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="./assets/images/hero.jpg" alt="PTI Sangrar Hero Banner" loading="lazy" decoding="async" width="1920" height="1080">
+    </div>
+  </div>
+</section>
+
+<!-- Stats strip -->
+<section class="stats-strip">
+  <div class="container">
+    <div class="stat"><b data-stat="news">0</b><span data-i18n="stats_news">News Published</span></div>
+    <div class="stat"><b data-stat="volunteers">0</b><span data-i18n="stats_volunteers">Volunteers Registered</span></div>
+    <div class="stat"><b data-stat="events">0</b><span data-i18n="stats_events">Events Held</span></div>
+    <div class="stat"><b data-stat="complaints">0</b><span data-i18n="stats_complaints">Complaints Resolved</span></div>
+  </div>
+</section>
+
+<!-- News -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="section_news">Latest News</span>
+      <h2 data-i18n="section_news">Latest News</h2>
+    </div>
+    <div class="grid grid-3" id="newsGrid"></div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="section_gallery">Gallery</span>
+      <h2 data-i18n="section_gallery">Photo & Video Gallery</h2>
+    </div>
+    <div class="grid grid-3" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- Events -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="section_events">Events</span>
+      <h2 data-i18n="section_events">Upcoming Events</h2>
+    </div>
+    <div id="eventsList"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> PTI Sangrar — <span data-i18n="footer_rights">All rights reserved.</span></span>
+      <a href="/index.html" data-i18n="nav_home">Home</a>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="/js/main.js"></script>
+<script type="module">
+  import { renderNewsList } from "/js/news.js";
+  import { renderGallery } from "/js/gallery.js";
+  import { renderEvents } from "/js/events.js";
+  import { renderStats } from "/js/stats.js";
+  import { renderSiteContent } from "/js/content.js";
+
+  // render only once per element
+  renderSiteContent();
+  renderStats();
+  renderNewsList(document.getElementById("newsGrid"));
+  renderGallery(document.getElementById("galleryGrid"));
+  renderEvents(document.getElementById("eventsList"));
+</script>
+</body>
+</html>
