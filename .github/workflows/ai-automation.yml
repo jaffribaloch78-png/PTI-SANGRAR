@@ -1,6 +1,6 @@
 name: Gemini AI Developer Automation
-
 on:
+  workflow_dispatch:
   issues:
     types: [opened, labeled]
 
